@@ -28,6 +28,12 @@ def test_power2(n, expected):
     (6, 8),
     (7, 13),
     (8, 21),
+    (0, RuntimeError),
+    (-1, RuntimeError),
 ])
 def test_fibo(n, expected):
-    assert fibo(n) == expected
+    if isinstance(expected, type) and issubclass(expected, Exception):
+        with pytest.raises(expected):
+            fibo(n)
+    else:
+        assert fibo(n) == expected
