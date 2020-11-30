@@ -57,3 +57,19 @@ def test_cals_calls_fibo(series, n, monkeypatch):
     assert fibo.call_count == 1
     assert fibo.call_args == call(n)
     assert out == sentinel.fibo
+
+
+@pytest.mark.parametrize('series,n', [
+    ('powers of two', 3),
+    ('POWERS OF TWO', 5),
+])
+def test_cals_calls_power2(series, n, monkeypatch):
+    fibo = create_autospec(examples.fibo, return_value=sentinel.fibo)
+    power2 = create_autospec(examples.power2, return_value=sentinel.power2)
+    monkeypatch.setattr(examples, 'fibo', fibo)
+    monkeypatch.setattr(examples, 'power2', power2)
+
+    out = series_calc(series, n)
+    assert power2.call_count == 1
+    assert power2.call_args == call(n)
+    assert out == sentinel.power2
