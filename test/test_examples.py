@@ -1,6 +1,6 @@
 """test_examples.py - tests for examples.py
 """
-from examples import power2
+from examples import power2, fibo
 
 
 def test_power2():
@@ -10,4 +10,9 @@ def test_power2():
 
 
 def test_fibo():
-    assert False, "Please implement tests for fibo()"
+    assert fibo(1) == 1
+    assert fibo(2) == 1
+    assert fibo(3) == 2
+    assert fibo(4) == 3
+    assert fibo(5) == 5
+    assert fibo(6) == 8
