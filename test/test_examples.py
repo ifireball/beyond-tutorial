@@ -1,12 +1,22 @@
 """test_examples.py - tests for examples.py
 """
+import pytest
+
 from examples import power2, fibo
 
 
-def test_power2():
-    assert power2(0) == 1
-    assert power2(1) == 2
-    assert power2(2) == 4
+@pytest.mark.parametrize('n,expected', [
+    (0, 1),
+    (1, 2),
+    (2, 4),
+    (3, 8),
+    (4, 16),
+    (5, 32),
+    (10, 1024),
+    (16, 65536),
+])
+def test_power2(n, expected):
+    assert power2(n) == expected
 
 
 def test_fibo():
