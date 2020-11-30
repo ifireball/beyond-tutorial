@@ -19,10 +19,15 @@ def test_power2(n, expected):
     assert power2(n) == expected
 
 
-def test_fibo():
-    assert fibo(1) == 1
-    assert fibo(2) == 1
-    assert fibo(3) == 2
-    assert fibo(4) == 3
-    assert fibo(5) == 5
-    assert fibo(6) == 8
+@pytest.mark.parametrize('n,expected', [
+    (1, 1),
+    (2, 1),
+    (3, 2),
+    (4, 3),
+    (5, 5),
+    (6, 8),
+    (7, 13),
+    (8, 21),
+])
+def test_fibo(n, expected):
+    assert fibo(n) == expected
