@@ -15,6 +15,8 @@ def fibo(n):
         return 1
     elif n > 2:
         return fibo(n - 1) + fibo(n - 2)
+    else:
+        raise RuntimeError(f'Can\'t calculate Fibonacchi value for {n}')
 
 
 def power2(n):
