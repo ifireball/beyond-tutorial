@@ -1,8 +1,10 @@
 """test_examples.py - tests for examples.py
 """
 import pytest
+from unittest.mock import create_autospec, sentinel, call
 
-from examples import power2, fibo
+from examples import power2, fibo, series_calc
+import examples
 
 
 @pytest.mark.parametrize('n,expected', [
@@ -37,3 +39,21 @@ def test_fibo(n, expected):
             fibo(n)
     else:
         assert fibo(n) == expected
+
+
+@pytest.mark.parametrize('series,n', [
+    ('fibonacchi', 3),
+    ('fibonacchi', 5),
+    ('Fibonacchi', 7),
+    ('FIBONACCHI', 5),
+])
+def test_cals_calls_fibo(series, n, monkeypatch):
+    fibo = create_autospec(examples.fibo, return_value=sentinel.fibo)
+    power2 = create_autospec(examples.power2, return_value=sentinel.power2)
+    monkeypatch.setattr(examples, 'fibo', fibo)
+    monkeypatch.setattr(examples, 'power2', power2)
+
+    out = series_calc(series, n)
+    assert fibo.call_count == 1
+    assert fibo.call_args == call(n)
+    assert out == sentinel.fibo
