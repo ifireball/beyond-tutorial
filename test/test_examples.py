@@ -41,18 +41,24 @@ def test_fibo(n, expected):
         assert fibo(n) == expected
 
 
+@pytest.fixture
+def series_funcs(monkeypatch):
+    fibo = create_autospec(examples.fibo, return_value=sentinel.fibo)
+    power2 = create_autospec(examples.power2, return_value=sentinel.power2)
+    monkeypatch.setattr(examples, 'fibo', fibo)
+    monkeypatch.setattr(examples, 'power2', power2)
+
+    return {'fibo': fibo, 'power2': power2}
+
+
 @pytest.mark.parametrize('series,n', [
     ('fibonacchi', 3),
     ('fibonacchi', 5),
     ('Fibonacchi', 7),
     ('FIBONACCHI', 5),
 ])
-def test_cals_calls_fibo(series, n, monkeypatch):
-    fibo = create_autospec(examples.fibo, return_value=sentinel.fibo)
-    power2 = create_autospec(examples.power2, return_value=sentinel.power2)
-    monkeypatch.setattr(examples, 'fibo', fibo)
-    monkeypatch.setattr(examples, 'power2', power2)
-
+def test_cals_calls_fibo(series, n, series_funcs):
+    fibo = series_funcs['fibo']
     out = series_calc(series, n)
     assert fibo.call_count == 1
     assert fibo.call_args == call(n)
@@ -63,12 +69,8 @@ def test_cals_calls_fibo(series, n, monkeypatch):
     ('powers of two', 3),
     ('POWERS OF TWO', 5),
 ])
-def test_cals_calls_power2(series, n, monkeypatch):
-    fibo = create_autospec(examples.fibo, return_value=sentinel.fibo)
-    power2 = create_autospec(examples.power2, return_value=sentinel.power2)
-    monkeypatch.setattr(examples, 'fibo', fibo)
-    monkeypatch.setattr(examples, 'power2', power2)
-
+def test_cals_calls_power2(series, n, series_funcs):
+    power2 = series_funcs['power2']
     out = series_calc(series, n)
     assert power2.call_count == 1
     assert power2.call_args == call(n)
