@@ -24,3 +24,20 @@ def power2(n):
     :return: The Nth power of two
     """
     return 2 ** n
+
+
+def series_calc(series, n):
+    """Calculate values in number series
+
+    :param str series: The number series to calculate values from, can be
+                       "fibonacchi" or "powers of two" (case insensitive)
+    :param int n:      The position in the series to calculate a value for
+    :return: The calculated Nth value
+    """
+    series = series.lower()
+    if series == 'fibonacchi':
+        return fibo(n)
+    elif series == 'powers of two':
+        return power2(n)
+    else:
+        raise RuntimeError('Unknown series requested')
